@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏍️ Piano di Progressione a Tappe</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --teal: #39d353;
+    --teal-dim: #1a4d2e;
+    --purple: #a371f7;
+    --purple-dim: #2d1f5e;
+    --amber: #e3b341;
+    --amber-dim: #3d2e00;
+    --coral: #f78166;
+    --coral-dim: #4a1e1a;
+    --blue: #58a6ff;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    --sans: 'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.7; }
+
+  /* LAYOUT */
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 280px; min-width: 280px; background: var(--bg2); border-right: 1px solid var(--border); padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .main { flex: 1; padding: 48px 56px; max-width: 860px; }
+
+  /* SIDEBAR */
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: .1em; color: var(--text3); text-transform: uppercase; padding: 0 20px 12px; }
+
+  .mod-group { border-bottom: 1px solid var(--border); }
+
+  .mod-btn { display: flex; align-items: flex-start; gap: 10px; width: 100%; background: none; border: none; color: var(--text2); cursor: pointer; padding: 10px 14px 10px 20px; text-align: left; transition: background .15s, color .15s; font-family: var(--sans); font-size: 13px; line-height: 1.4; }
+  .mod-btn:hover { background: var(--bg3); color: var(--text); }
+  .mod-btn.active { background: var(--bg3); color: var(--text); }
+  .mod-btn-text { flex: 1; min-width: 0; }
+  .mod-chevron { font-size: 10px; color: var(--text3); margin-top: 4px; flex-shrink: 0; transition: transform .2s; line-height: 1; }
+  .mod-group.open .mod-chevron { transform: rotate(90deg); }
+
+  .mod-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .dot-teal { background: var(--teal); }
+  .dot-purple { background: var(--purple); }
+  .dot-amber { background: var(--amber); }
+  .dot-coral { background: var(--coral); }
+  .mod-label { font-size: 10px; display: block; margin-top: 2px; }
+
+  .mod-sections { display: none; padding: 2px 0 8px 0; background: var(--bg); }
+  .mod-group.open .mod-sections { display: block; }
+  .sec-link { display: block; padding: 5px 16px 5px 40px; font-size: 11.5px; color: var(--text3); text-decoration: none; line-height: 1.4; transition: color .12s, background .12s; white-space: normal; }
+  .sec-link:hover { color: var(--text); background: var(--bg3); }
+  .sec-link.sec-active { color: var(--text); font-weight: 500; }
+
+  /* CONTENT */
+  .mod-page { display: none; }
+  .mod-page.visible { display: block; }
+
+  .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+  .eyebrow-teal { color: var(--teal); }
+  .eyebrow-purple { color: var(--purple); }
+  .eyebrow-amber { color: var(--amber); }
+  .eyebrow-coral { color: var(--coral); }
+
+  h1 { font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+  .page-sub { color: var(--text2); font-size: 15px; margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+
+  h2 { font-size: 17px; font-weight: 600; margin: 36px 0 12px; color: var(--text); }
+  h3 { font-size: 14px; font-weight: 600; margin: 24px 0 8px; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; }
+  p { margin-bottom: 14px; color: var(--text2); }
+  p strong { color: var(--text); font-weight: 600; }
+  ul, ol { margin: 0 0 14px 20px; color: var(--text2); }
+  li { margin-bottom: 6px; }
+
+  /* TABLE */
+  .anatomy { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; }
+  .anatomy thead tr { background: var(--bg3); }
+  .anatomy th { padding: 8px 14px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); }
+  .anatomy td { padding: 8px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .anatomy tr:last-child td { border-bottom: none; }
+  .anatomy .part { font-family: var(--mono); font-size: 12px; color: var(--teal); white-space: nowrap; }
+  .anatomy .desc { color: var(--text2); }
+  .table-scroll { overflow-x: auto; margin: 16px 0 24px; }
+  .table-scroll .anatomy { margin: 0; }
+
+  /* CALLOUT */
+  .callout { border-left: 3px solid; border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 20px 0; font-size: 14px; }
+  .callout-tip { border-color: var(--teal); background: var(--teal-dim); }
+  .callout-warn { border-color: var(--amber); background: var(--amber-dim); }
+  .callout-danger { border-color: var(--coral); background: var(--coral-dim); }
+  .callout-info { border-color: var(--blue); background: #0d2044; }
+  .callout p { margin: 0; color: var(--text); }
+  .callout-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+  .callout-tip .callout-label { color: var(--teal); }
+  .callout-warn .callout-label { color: var(--amber); }
+  .callout-danger .callout-label { color: var(--coral); }
+  .callout-info .callout-label { color: var(--blue); }
+
+  /* SECTION DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+  /* NAV BUTTONS */
+  .nav-row { display: flex; gap: 12px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .nav-btn { display: flex; align-items: center; gap: 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-family: var(--sans); font-size: 13px; color: var(--text2); transition: all .15s; }
+  .nav-btn:hover { border-color: var(--blue); color: var(--text); }
+  .nav-btn.next { margin-left: auto; background: var(--bg3); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* MOBILE TOPBAR (nascosto su desktop) */
+  .mobile-topbar { display: none; }
+  .sidebar-overlay { display: none; }
+
+  /* RESPONSIVE / MOBILE */
+  @media (max-width: 900px) {
+    .mobile-topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+    .hamburger-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .mobile-topbar-title { font-size: 13px; font-weight: 600; color: var(--text); }
+
+    .shell { display: block; }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 82vw;
+      max-width: 320px;
+      min-width: 0;
+      height: 100vh;
+      z-index: 40;
+      transform: translateX(-100%);
+      transition: transform .25s ease;
+      box-shadow: 2px 0 20px rgba(0,0,0,.5);
+    }
+    .sidebar.open { transform: translateX(0); }
+
+    .sidebar-overlay.open {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 35;
+    }
+
+    .main { padding: 24px 18px 48px; max-width: 100%; }
+    h1 { font-size: 22px; }
+    .page-sub { font-size: 14px; margin-bottom: 24px; padding-bottom: 16px; }
+    h2 { font-size: 16px; }
+    .nav-row { flex-wrap: wrap; }
+  }
+
+  @media (max-width: 480px) {
+    .main { padding: 20px 14px 40px; }
+    h1 { font-size: 20px; }
+  }
+</style>
+<body>
+<div class="shell">
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div class="mobile-topbar">
+  <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Apri menu">☰</button>
+  <div class="mobile-topbar-title">🏍️ Piano di Progressione</div>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-title">🏍️ Piano di Progressione</div>
+
+  <div class="mod-group" id="group-index">
+    <button class="mod-btn active" onclick="showMod('index')">
+      <span class="mod-dot dot-teal"></span>
+      <span class="mod-btn-text"><strong>Introduzione</strong><span class="mod-label">Perché questa struttura</span></span>
+      <span class="mod-chevron">▸</span>
+    </button>
+  </div>
+
+  <div class="mod-group" id="group-0">
+    <button class="mod-btn" onclick="showMod(0)">
+      <span class="mod-dot dot-teal"></span>
+      <span class="mod-btn-text"><strong>Tappa 1</strong><span class="mod-label">Sguardo e lettura anticipata</span></span>
+      <span class="mod-chevron">▸</span>
+    </button>
+  </div>
+
+  <div class="mod-group" id="group-1">
+    <button class="mod-btn" onclick="showMod(1)">
+      <span class="mod-dot dot-teal"></span>
+      <span class="mod-btn-text"><strong>Tappa 2A</strong><span class="mod-label">Frenata e rilascio — base</span></span>
+      <span class="mod-chevron">▸</span>
+    </button>
+  </div>
+
+  <div class="mod-group" id="group-2">
+    <button class="mod-btn" onclick="showMod(2)">
+      <span class="mod-dot dot-purple"></span>
+      <span class="mod-btn-text"><strong>Tappa 2B</strong><span class="mod-label">Frenata e rilascio — avanzato</span></span>
+      <span class="mod-chevron">▸</span>
+    </button>
+  </div>
+
+  <div class="mod-group" id="group-3">
+    <button class="mod-btn" onclick="showMod(3)">
+      <span class="mod-dot dot-purple"></span>
+      <span class="mod-btn-text"><strong>Tappa 3</strong><span class="mod-label">Punto di inserzione e corda</span></span>
+      <span class="mod-chevron">▸</span>
+    </button>
+  </div>
+
+  <div class="mod-group" id="group-4">
+    <button class="mod-btn" onclick="showMod(4)">
+      <span class="mod-dot dot-amber"></span>
+      <span class="mod-btn-text"><strong>Tappa 4</strong><span class="mod-label">Decisione nel controsterzo</span></span>
+      <span class="mod-chevron">▸</span>
+    </button>
+  </div>
+
+  <div class="mod-group" id="group-5">
+    <button class="mod-btn" onclick="showMod(5)">
+      <span class="mod-dot dot-coral"></span>
+      <span class="mod-btn-text"><strong>Tappa 5</strong><span class="mod-label">Simmetria sx/dx e sguardo in uscita</span></span>
+      <span class="mod-chevron">▸</span>
+    </button>
+  </div>
+
+  <div class="mod-group" id="group-extra">
+    <button class="mod-btn" onclick="showMod('extra')">
+      <span class="mod-dot dot-coral"></span>
+      <span class="mod-btn-text"><strong>Chiusura ciclo</strong><span class="mod-label">Attività trasversali · Nota finale</span></span>
+      <span class="mod-chevron">▸</span>
+    </button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- INTRODUZIONE -->
+  <div class="mod-page visible" id="mod-index">
+    <div class="page-eyebrow eyebrow-teal">Introduzione</div>
+    <h1>Piano di Progressione a Tappe</h1>
+    <div class="page-sub">Guida sicura su strada e guida sportiva in pista — a cura di Fiamma, Benzena BikerSchool</div>
+
+    <h2>Perché questa struttura</h2>
+    <p>Fare un corso non basta: è necessario che ogni allievo sia in grado di replicare ciò che ha imparato durante la giornata anche per conto proprio. Tra un corso e l'altro non basta "fare km": serve sapere su cosa concentrarsi, come riconoscerlo mentre guidi, e quando puoi dire di aver fatto un progresso vero.</p>
+    <p>Questo piano è costruito come una scheda di allenamento in palestra: tappe in sequenza, un obiettivo alla volta, criteri concreti per avanzare.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-label">Logica di ordinamento</div>
+      <p>Si lavora prima su ciò che condiziona tutto il resto: non ha senso perfezionare il punto di inserzione se lo sguardo non legge già la curva in anticipo; non ha senso lavorare sulla simmetria sx/dx se il controsterzo è ancora "diluito". Ogni tappa costruisce la base per quella successiva.</p>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-label">Regola d'oro</div>
+      <p>Non passare alla tappa successiva finché la tappa precedente non è solida. Meglio consolidare 2-3 aspetti bene che inseguirne 5 in modo superficiale.</p>
+    </div>
+
+    <h2>Come è organizzato</h2>
+    <p>Il manuale è diviso in cinque tappe, ciascuna dedicata a un solo aspetto tecnico. Ogni tappa ha sempre la stessa struttura, così da poterla consultare rapidamente anche a bordo strada, prima di partire:</p>
+    <ul>
+      <li><strong>Aspetto tecnico</strong> — su cosa concentrarsi in questa tappa</li>
+      <li><strong>Come riconoscerlo mentre guidi</strong> — il segnale concreto, in tempo reale</li>
+      <li><strong>Attività / esercizio</strong> — dove e come allenarlo (su strada e in pista)</li>
+      <li><strong>Criterio di autovalutazione</strong> — come sai se stai migliorando, senza video</li>
+      <li><strong>Quando passare oltre</strong> — la soglia per avanzare alla tappa successiva</li>
+    </ul>
+
+    <h2>Obiettivi di apprendimento generali</h2>
+    <p>Al termine del percorso completo, ogni allievo dovrebbe essere in grado di:</p>
+    <ol>
+      <li>Riconoscere in tempo reale, tramite segnali fisici e sensazioni concrete, i propri errori tecnici principali sia su strada che in pista;</li>
+      <li>Applicare correzioni mirate durante la guida, senza bisogno di rivedere un video per capire cosa è andato storto;</li>
+      <li>Autovalutare i progressi con criteri oggettivi e ripetibili, distinguendo un'imprecisione dovuta a tecnica da una dovuta a lettura/fiducia nella strada;</li>
+      <li>Trasferire il lavoro fatto in pista (feedback più chiaro grazie a traiettorie ripetibili e video) alla guida in pista in autonomia e su strada.</li>
+    </ol>
+
+    <h2>Le 5 tappe della progressione</h2>
+    <div class="table-scroll">
+    <table class="anatomy">
+      <thead><tr><th>Tappa</th><th>Aspetto tecnico</th><th>Perché va prima</th></tr></thead>
+      <tbody>
+        <tr><td class="part">1</td><td class="desc">Sguardo e lettura anticipata della curva</td><td class="desc">Condiziona tutto: senza sguardo corretto, ogni altra correzione è casuale</td></tr>
+        <tr><td class="part">2</td><td class="desc">Punto di frenata e rilascio</td><td class="desc">Se freni troppo presto/tardi o cambi riferimento ogni volta, tutto quello che segue è compromesso</td></tr>
+        <tr><td class="part">3</td><td class="desc">Punto di inserzione e corda</td><td class="desc">Dipende da sguardo e frenata già impostati e ripetibili</td></tr>
+        <tr><td class="part">4</td><td class="desc">Decisione nel controsterzo</td><td class="desc">Va allenata quando l'inserzione è già coerente, altrimenti si corregge nel punto sbagliato</td></tr>
+        <tr><td class="part">5</td><td class="desc">Simmetria sx/dx e sguardo in uscita</td><td class="desc">Rifinitura finale, richiede i primi 4 punti perfettamente automatizzati</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h2>Strada e pista: due palestre diverse, un solo metodo</h2>
+    <p>Ogni esercizio è proposto in due versioni, complementari non alternative:</p>
+    <ul>
+      <li><strong>La pista</strong> offre ripetibilità: la stessa curva, identica ogni giro, permette di isolare una singola variabile e sentire l'effetto di una correzione con precisione impossibile su strada.</li>
+      <li><strong>La strada</strong> offre variabilità e imprevedibilità reali: è dove queste abilità devono funzionare in automatico, anche su fondi e curve mai viste prima.</li>
+    </ul>
+    <p>Quando è disponibile un track day, usalo per "calibrare" la sensazione della tappa attiva, poi porta quella sensazione sulla strada nei giorni successivi.</p>
+
+    <div class="callout callout-danger">
+      <div class="callout-label">Attenzione — sicurezza su strada</div>
+      <p>Gli esercizi «su strada» vanno sempre svolti rispettando i limiti di velocità, il codice della strada e con margine di sicurezza rispetto a traffico, visibilità e condizioni dell'asfalto. La strada aperta non è un banco di prova per il limite del mezzo o del pilota: quello è compito della pista, in un contesto controllato. Su strada l'obiettivo è sempre la precisione a un ritmo prudente, mai la velocità.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn next" onclick="showMod(0)">Tappa 1 →</button>
+    </div>
+  </div>
+
+  <!-- TAPPA 1 -->
+  <div class="mod-page" id="mod-0">
+    <div class="page-eyebrow eyebrow-teal">Tappa 1</div>
+    <h1>Sguardo e lettura anticipata della curva</h1>
+    <div class="page-sub">Condiziona tutto: senza sguardo corretto, ogni altra correzione è casuale</div>
+
+    <h2>Obiettivo di apprendimento</h2>
+    <p>Guardare sistematicamente il punto di ingresso in curva, successivamente la corda ed infine l'uscita, mantenendo sempre lo sguardo alto e "lontano" (non l'asfalto vicino alla ruota). Se manca questo, manca tutto.</p>
+
+    <h3>Come riconoscerlo mentre guidi</h3>
+    <p>Se ti accorgi che stai "scoprendo" la curva man mano che ci entri — la traiettoria ti sorprende, senti che stai decidendo l'angolo di piega dentro la curva invece che prima — è segno che lo sguardo è corto. Un altro segnale: se noti il cordolo o il margine strada solo quando sei già vicino, stai guardando troppo vicino al mezzo.</p>
+
+    <h3>Attività / esercizio</h3>
+    <p><strong>Su strada:</strong> scegli un tratto con curve di media percorrenza che conosci abbastanza bene da non avere sorprese pericolose. Ad ogni curva, verbalizza mentalmente (anche a voce) "ingresso – corda – uscita". Se non riesci a dirlo prima di iniziare l'inserzione, rallenta l'ingresso finché non ci riesci.</p>
+    <p><strong>In pista:</strong> su un tracciato conosciuto, fai alcuni giri dedicati esclusivamente allo sguardo, ignorando volutamente la velocità: l'obiettivo del giro non è essere veloce, è "vedere sempre la cosa giusta al momento giusto". Utile ripeterlo a inizio sessione, come riscaldamento mentale prima di alzare il ritmo.</p>
+
+    <h3>Criterio di autovalutazione (senza video)</h3>
+    <p>La sensazione dominante deve cambiare da "reagisco alla curva" a "la curva è già decisa prima di piegare". Indicatore concreto: la traiettoria diventa più fluida, senza correzioni o pasticci.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">Quando passare alla tappa successiva</div>
+      <p>Quando riesci a mantenere lo sguardo lungo in modo automatico, anche su curve nuove che non hai mai affrontato, senza doverci pensare attivamente.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="showMod('index')">← Introduzione</button>
+      <button class="nav-btn next" onclick="showMod(1)">Tappa 2A →</button>
+    </div>
+  </div>
+
+  <!-- TAPPA 2A -->
+  <div class="mod-page" id="mod-1">
+    <div class="page-eyebrow eyebrow-teal">Tappa 2A</div>
+    <h1>Punto di frenata e rilascio — prime armi</h1>
+    <div class="page-sub">Se freni troppo presto o troppo tardi, tutto quello che segue è già compromesso</div>
+
+    <h2>Obiettivo di apprendimento</h2>
+    <p>Completare la frenata (o la maggior parte di essa) prima dell'inizio della piega, evitando di "portarsi" il freno a curva già iniziata.</p>
+
+    <h3>Come riconoscerlo mentre guidi</h3>
+    <p>Il segnale primario è la sensazione di freno in mano ancora a metà curva (e conseguente inserimento tardivo). Un altro segnale utile: se senti la moto che si raddrizza o resiste ad entrare in curva proprio mentre stai rilasciando il freno, la frenata è sconfinata nella fase di inserimento.</p>
+
+    <h3>Attività / esercizio</h3>
+    <p><strong>Su strada:</strong> su curve che conosci bene, prova ad anticipare leggermente (pochi metri alla volta, non stravolgere) il punto in cui inizi a rilasciare il freno, cercando di arrivare al punto di inserzione già "libero".</p>
+    <p><strong>In pista:</strong> ripeti la stessa curva più volte con un solo cambiamento per volta — anticipa il rilascio freno di una piccola quantità, valuta la sensazione, poi eventualmente anticipa ancora. È un lavoro molto più preciso in pista perché la curva è identica ogni giro.</p>
+
+    <h3>Criterio di autovalutazione (senza video)</h3>
+    <p>La moto entra in piega "libera", senza tirare né spingere contro la frenata residua. La sensazione di scorrevolezza in ingresso aumenta.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">Quando passare alla tappa 2B</div>
+      <p>Quando il rilascio del freno è completato (o quasi) prima dell'inserzione in modo ripetibile, su diverse tipologie di curva.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="showMod(0)">← Tappa 1</button>
+      <button class="nav-btn next" onclick="showMod(2)">Tappa 2B →</button>
+    </div>
+  </div>
+
+  <!-- TAPPA 2B -->
+  <div class="mod-page" id="mod-2">
+    <div class="page-eyebrow eyebrow-purple">Tappa 2B</div>
+    <h1>Punto di frenata e rilascio — avanzato</h1>
+    <div class="page-sub">Metodo di lavoro avanzato, da usare prevalentemente in pista</div>
+
+    <h2>Obiettivo di apprendimento</h2>
+    <p>Entrare in curva con il freno in mano, portandosi il freno fino al punto di corda. Indispensabile avere già una buona velocità di ingresso, altrimenti diventa impossibile completare la tappa con senso logico.</p>
+
+    <h3>Come riconoscerlo mentre guidi</h3>
+    <p>La moto "spinge" per entrare in curva, si sovraccarica l'anteriore e si deve guidare con il corpo, senza farsi "portare" dalla traiettoria. Diventa una guida più fisica, ma la moto sembra essere più agile.</p>
+
+    <div class="callout callout-danger">
+      <div class="callout-label">Su strada — sconsigliato</div>
+      <p>Si tratta di una guida avanzata e racing, che la Fiamma personalmente non consiglia in strada perché richiede una velocità di ingresso molto alta e dà poche scappatoie in caso di imprevisto (coda dietro la curva, breccino in corda ecc). Il rischio di chiusura dell'anteriore per fondo sconnesso è alto, così come l'istinto di prendere il freno anteriore in mano se appena dietro la curva si trova una coda o un cantiere.</p>
+    </div>
+
+    <h3>Attività / esercizio — In pista</h3>
+    <p>Trattandosi di una tecnica racing, la pista è il luogo più sicuro dove provarla. Prendi una curva che ti piace, possibilmente una dx e una sx, e prova a ritardare ogni volta un po' di più il momento in cui prendi in mano il freno:</p>
+    <ul>
+      <li>Se la frenata finisce prima della corda e sei costretto a riprendere il gas per finire la curva → sei arrivato troppo piano o hai frenato troppo presto.</li>
+      <li>Se la frenata finisce oltre la corda e vai largo → hai frenato con poca intensità o (raramente) davvero troppo tardi.</li>
+    </ul>
+    <p>È un lavoro molto più preciso in pista perché la curva è identica ogni giro.</p>
+
+    <h3>Criterio di autovalutazione (senza video)</h3>
+    <p>La moto entra in piega che spinge, diventando più agile e precisa nell'inserimento e nella conseguente uscita. La sensazione di stabilità e velocità controllata in ingresso aumenta.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">Quando passare alla tappa successiva</div>
+      <p>Quando il punto di staccata si ripete sempre uguale e la frenata finisce sempre precisamente alla corda, su diverse tipologie di curva.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="showMod(1)">← Tappa 2A</button>
+      <button class="nav-btn next" onclick="showMod(3)">Tappa 3 →</button>
+    </div>
+  </div>
+
+  <!-- TAPPA 3 -->
+  <div class="mod-page" id="mod-3">
+    <div class="page-eyebrow eyebrow-purple">Tappa 3</div>
+    <h1>Punto di inserzione e corda</h1>
+    <div class="page-sub">Correggere l'early apex / ingresso anticipato</div>
+
+    <h2>Obiettivo di apprendimento</h2>
+    <p>Spostare il punto in cui la moto raggiunge il punto più interno della curva (apex o corda) più avanti, evitando di "chiudere" la traiettoria troppo presto e cucirsi al cordolo interno o alla riga bianca interna (in strada).</p>
+
+    <h3>Come riconoscerlo mentre guidi</h3>
+    <p>Se dopo la corda ti accorgi di dover correggere la traiettoria per non uscire largo (obbligandoti a cucirti all'interno), è quasi sempre segno di early apex: hai raggiunto la corda troppo presto rispetto alla curva. Un segnale fisico: senti la necessità di "richiudere" il gas o correggere la piega proprio a metà/fine curva, quando dovresti già essere in fase di apertura.</p>
+
+    <h3>Attività / esercizio</h3>
+    <p><strong>Su strada:</strong> su curve ampie e con buona visibilità, che conosci molto bene, esagera leggermente nel ritardare il punto in cui "punti" verso l'interno — è più facile correggere un apex troppo tardivo (sicuro) che uno troppo anticipato (rischioso, ti porta verso l'esterno in uscita, magari in controsenso).</p>
+
+    <div class="callout callout-warn">
+      <div class="callout-label">Attenzione</div>
+      <p>Non forzare troppo: rischi di andare troppo vicino alla riga di mezzeria o addirittura contromano.</p>
+    </div>
+
+    <p><strong>In pista:</strong> qui è dove questo lavoro rende di più, perché puoi ripetere la stessa curva provando punti di apex leggermente diversi e sentire subito la differenza nella fluidità di uscita. La curva si aprirà da sola.</p>
+
+    <h3>Criterio di autovalutazione (senza video)</h3>
+    <p>L'uscita di curva diventa più "larga e pulita", senza bisogno di correzioni. Ti accorgi di poter aprire il gas prima e in modo più progressivo.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">Quando passare alla tappa successiva</div>
+      <p>Quando l'apex è coerente e ripetibile su curve diverse, e le correzioni in uscita si riducono sensibilmente.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="showMod(2)">← Tappa 2B</button>
+      <button class="nav-btn next" onclick="showMod(4)">Tappa 4 →</button>
+    </div>
+  </div>
+
+  <!-- TAPPA 4 -->
+  <div class="mod-page" id="mod-4">
+    <div class="page-eyebrow eyebrow-amber">Tappa 4</div>
+    <h1>Decisione nel controsterzo</h1>
+    <div class="page-sub">Va allenata quando l'inserzione è già coerente</div>
+
+    <h2>Obiettivo di apprendimento</h2>
+    <p>Riconoscere la differenza fra una curva che necessita di un controsterzo più deciso rispetto ad un'altra che lo richiede più blando.</p>
+
+    <h3>Come riconoscerlo mentre guidi</h3>
+    <p>Se senti che la moto "scende" in piega gradualmente, con un input che sembra progressivo ma poco definito, e se hai la sensazione di dover "accompagnare" la moto più che comandarla, il controsterzo è probabilmente diluito. Un segnale utile: la moto ti porta da sola troppo verso il centro curva o tende a chiudere eccessivamente. Esempio: il tornante che fa sì che si abbatta la moto da quasi ferma in corda/centro.</p>
+
+    <h3>Attività / esercizio</h3>
+    <p><strong>Su strada:</strong> su una serie di curve semplici e a bassa/media velocità (attenzione: non forzare su strada aperta al traffico!), lavora sulla decisione dell'input di controsterzo separatamente dalla velocità — l'obiettivo non è piegare di più, è piegare più deciso. Più la curva è stretta, più necessita di controsterzo deciso e azione sulla gamba esterna, es. tornante di montagna.</p>
+    <p><strong>In pista:</strong> ideale per questo lavoro. Su una curva singola, ripeti l'ingresso concentrandoti solo sulla nettezza del comando, tenendo la velocità costante tra un tentativo e l'altro, per isolare la variabile.</p>
+
+    <h3>Criterio di autovalutazione (senza video)</h3>
+    <p>La moto risponde in modo più immediato e prevedibile al comando. Diminuisce la sensazione di "incertezza" nei primi metri di piega.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">Quando passare alla tappa successiva</div>
+      <p>Quando il controsterzo è deciso in modo consistente su curve a raggiatura diversa, anche in situazioni non pianificate (es. curva che ti aspettavi diversa).</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="showMod(3)">← Tappa 3</button>
+      <button class="nav-btn next" onclick="showMod(5)">Tappa 5 →</button>
+    </div>
+  </div>
+
+  <!-- TAPPA 5 -->
+  <div class="mod-page" id="mod-5">
+    <div class="page-eyebrow eyebrow-coral">Tappa 5</div>
+    <h1>Simmetria sinistra/destra e gestione sguardo in uscita</h1>
+    <div class="page-sub">Rifinitura finale del ciclo base</div>
+
+    <h2>Obiettivo di apprendimento</h2>
+    <p>Portare lo stesso livello di sicurezza, sguardo e decisione sia nelle curve a sinistra che a destra, ed estendere lo sguardo verso l'uscita e oltre.</p>
+
+    <h3>Come riconoscerlo mentre guidi</h3>
+    <p>Se noti che un lato ti sembra "più naturale" dell'altro — piega più fluida, meno esitazione, meno correzioni — c'è asimmetria da lavorare. In uscita, se il tuo sguardo resta fissato sull'apex invece di spostarsi verso il punto di uscita e oltre, la gestione dello sguardo in uscita non è ancora completa.</p>
+
+    <h3>Attività / esercizio</h3>
+    <p><strong>Su strada:</strong> scegli un percorso con curve alternate sx/dx in quantità simile, e presta attenzione consapevole al lato che ti risulta meno naturale, applicando gli stessi principi già consolidati nelle tappe precedenti.</p>
+    <p><strong>In pista:</strong> i tracciati spesso hanno un numero disomogeneo di curve a destra e sinistra — usa i tratti liberi (rettilinei, pit lane) per fare mentalmente il punto su quale lato richiede più attenzione, poi dedica giri specifici a quel lato.</p>
+
+    <h3>Criterio di autovalutazione (senza video)</h3>
+    <p>Le sensazioni di sicurezza, fluidità e tempo di reazione diventano equivalenti sui due lati. Lo sguardo si sposta naturalmente verso l'uscita senza sforzo cosciente.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">Quando passare oltre</div>
+      <p>Questa è l'ultima tappa del ciclo base — quando è consolidata, il criterio per "chiudere il cerchio" è tornare a fare un check per una nuova valutazione video e ripartire con un nuovo set di priorità.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="showMod(4)">← Tappa 4</button>
+      <button class="nav-btn next" onclick="showMod('extra')">Chiusura ciclo →</button>
+    </div>
+  </div>
+
+  <!-- CHIUSURA CICLO -->
+  <div class="mod-page" id="mod-extra">
+    <div class="page-eyebrow eyebrow-coral">Chiusura ciclo</div>
+    <h1>Attività trasversali e nota finale</h1>
+    <div class="page-sub">Due pratiche valide per tutto il percorso, e come si chiude il cerchio</div>
+
+    <h2>Due attività trasversali (da fare in ogni tappa)</h2>
+
+    <h3>1. Diario di bordo minimo</h3>
+    <p>Dopo ogni uscita in moto, scrivi 3 righe (bastano 2 minuti): su cosa hai lavorato, cosa hai sentito (usando i segnali della tappa attiva), e se ti senti pronto a passare oltre. Non serve altro — l'obiettivo è costruire consapevolezza, non un report dettagliato.</p>
+
+    <h3>2. Una curva "campione" per tappa</h3>
+    <p>Individua una curva che percorri spesso e usala come "banco di prova" costante per la tappa attiva. Confrontare le sensazioni sulla stessa curva nel tempo è molto più affidabile che valutare curve sempre diverse, perché elimini la variabile "curva diversa = sensazioni diverse".</p>
+
+    <div class="divider"></div>
+
+    <h2>Nota finale</h2>
+    <p>Questo è un ciclo di base pensato per essere ripetuto: dopo la Tappa 5, la struttura si ripropone con un nuovo set di priorità basato su quello che emergerà nel prossimo check video.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-label">Obiettivo del piano</div>
+      <p>L'obiettivo non è "finire" il piano una volta per tutte, ma avere sempre un filo logico chiaro su cui lavorare, invece di guidare "alla cieca" tra un check e l'altro.</p>
+    </div>
+
+    <p style="margin-top:32px; color:var(--text3); font-style:italic;">Buon lavoro! — Fiamma, Benzena BikerSchool</p>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="showMod(5)">← Tappa 5</button>
+      <button class="nav-btn next" onclick="showMod('index')">↺ Torna all'introduzione</button>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+function showMod(n) {
+  document.querySelectorAll('.mod-page').forEach(p => p.classList.remove('visible'));
+
+  let pageId = (n === 'index') ? 'mod-index' : (n === 'extra' ? 'mod-extra' : 'mod-' + n);
+  const page = document.getElementById(pageId);
+  if (page) page.classList.add('visible');
+
+  document.querySelectorAll('.mod-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.mod-group').forEach(g => g.classList.remove('open'));
+
+  let groupId = (n === 'index') ? 'group-index' : (n === 'extra' ? 'group-extra' : 'group-' + n);
+  const grp = document.getElementById(groupId);
+  if (grp) {
+    grp.classList.add('open');
+    const btn = grp.querySelector('.mod-btn');
+    if (btn) btn.classList.add('active');
+  }
+
+  window.scrollTo(0, 0);
+  closeSidebar();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  showMod('index');
+  document.querySelectorAll('.anatomy').forEach(t => {
+    if (t.parentElement.classList.contains('table-scroll')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'table-scroll';
+    t.parentNode.insertBefore(wrap, t);
+    wrap.appendChild(t);
+  });
+});
+</script>
+</body>
+</html>
