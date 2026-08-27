@@ -105,6 +105,11 @@
   /* SECTION DIVIDER */
   .divider { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
 
+  /* DIAGRAM BOX */
+  .diagram-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 20px 0; overflow-x: auto; }
+  .diagram-box svg { width: 100%; height: auto; display: block; min-width: 420px; }
+  .diagram-caption { font-size: 12px; color: var(--text3); text-align: center; margin-top: 10px; }
+
   /* NAV BUTTONS */
   .nav-row { display: flex; gap: 12px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
   .nav-btn { display: flex; align-items: center; gap: 8px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; cursor: pointer; font-family: var(--sans); font-size: 13px; color: var(--text2); transition: all .15s; }
@@ -351,6 +356,29 @@
     <h3>Come riconoscerlo mentre guidi</h3>
     <p>Se ti accorgi che stai "scoprendo" la curva man mano che ci entri — la traiettoria ti sorprende, senti che stai decidendo l'angolo di piega dentro la curva invece che prima — è segno che lo sguardo è corto. Un altro segnale: se noti il cordolo o il margine strada solo quando sei già vicino, stai guardando troppo vicino al mezzo.</p>
 
+    <div class="diagram-box">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowTeal1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 Z" fill="var(--teal)"/></marker>
+          <marker id="arrowCoral1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 Z" fill="var(--coral)"/></marker>
+        </defs>
+        <line x1="20" y1="160" x2="580" y2="160" stroke="var(--border)" stroke-width="2"/>
+        <circle cx="80" cy="160" r="6" fill="var(--teal)"/>
+        <text x="80" y="185" fill="var(--text2)" font-size="12" text-anchor="middle">1. Ingresso</text>
+        <circle cx="300" cy="160" r="6" fill="var(--teal)"/>
+        <text x="300" y="185" fill="var(--text2)" font-size="12" text-anchor="middle">2. Corda</text>
+        <circle cx="520" cy="160" r="6" fill="var(--teal)"/>
+        <text x="520" y="185" fill="var(--text2)" font-size="12" text-anchor="middle">3. Uscita</text>
+        <circle cx="40" cy="160" r="5" fill="var(--blue)"/>
+        <text x="40" y="55" fill="var(--blue)" font-size="12" text-anchor="middle">Tu sei qui</text>
+        <path d="M40,150 Q170,40 300,150" fill="none" stroke="var(--teal)" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowTeal1)"/>
+        <text x="170" y="58" fill="var(--teal)" font-size="12" text-anchor="middle">sguardo lungo ✓</text>
+        <path d="M40,163 L90,163" stroke="var(--coral)" stroke-width="2" marker-end="url(#arrowCoral1)"/>
+        <text x="65" y="140" fill="var(--coral)" font-size="11" text-anchor="middle">sguardo corto ✗</text>
+      </svg>
+      <div class="diagram-caption">Mentre sei ancora prima dell'ingresso, lo sguardo deve essere già alla corda — non sul punto vicino alla ruota.</div>
+    </div>
+
     <h3>Attività / esercizio</h3>
     <p><strong>Su strada:</strong> scegli un tratto con curve di media percorrenza che conosci abbastanza bene da non avere sorprese pericolose. Ad ogni curva, verbalizza mentalmente (anche a voce) "ingresso – corda – uscita". Se non riesci a dirlo prima di iniziare l'inserzione, rallenta l'ingresso finché non ci riesci.</p>
     <p><strong>In pista:</strong> su un tracciato conosciuto, fai alcuni giri dedicati esclusivamente allo sguardo, ignorando volutamente la velocità: l'obiettivo del giro non è essere veloce, è "vedere sempre la cosa giusta al momento giusto". Utile ripeterlo a inizio sessione, come riscaldamento mentale prima di alzare il ritmo.</p>
@@ -380,6 +408,19 @@
 
     <h3>Come riconoscerlo mentre guidi</h3>
     <p>Il segnale primario è la sensazione di freno in mano ancora a metà curva (e conseguente inserimento tardivo). Un altro segnale utile: se senti la moto che si raddrizza o resiste ad entrare in curva proprio mentre stai rilasciando il freno, la frenata è sconfinata nella fase di inserimento.</p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="100" x2="580" y2="100" stroke="var(--border)" stroke-width="2"/>
+        <rect x="60" y="88" width="200" height="24" fill="var(--coral-dim)" stroke="var(--coral)" stroke-width="1.5"/>
+        <text x="160" y="70" fill="var(--coral)" font-size="12" text-anchor="middle">FRENATA</text>
+        <line x1="280" y1="70" x2="280" y2="130" stroke="var(--text)" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="280" y="145" fill="var(--text)" font-size="12" text-anchor="middle">Inizio piega</text>
+        <rect x="290" y="88" width="260" height="24" fill="var(--teal-dim)" stroke="var(--teal)" stroke-width="1.5"/>
+        <text x="420" y="70" fill="var(--teal)" font-size="12" text-anchor="middle">piega libera, senza freno</text>
+      </svg>
+      <div class="diagram-caption">La frenata finisce completamente prima dell'inizio della piega: la moto entra in curva "libera".</div>
+    </div>
 
     <h3>Attività / esercizio</h3>
     <p><strong>Su strada:</strong> su curve che conosci bene, prova ad anticipare leggermente (pochi metri alla volta, non stravolgere) il punto in cui inizi a rilasciare il freno, cercando di arrivare al punto di inserzione già "libero".</p>
@@ -416,6 +457,26 @@
       <p>Si tratta di una guida avanzata e racing, che la Fiamma personalmente non consiglia in strada perché richiede una velocità di ingresso molto alta e dà poche scappatoie in caso di imprevisto (coda dietro la curva, breccino in corda ecc). Il rischio di chiusura dell'anteriore per fondo sconnesso è alto, così come l'istinto di prendere il freno anteriore in mano se appena dietro la curva si trova una coda o un cantiere.</p>
     </div>
 
+    <div class="diagram-box">
+      <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fadeGrad" x1="0" x2="1">
+            <stop offset="0%" stop-color="var(--coral)" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="var(--coral)" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+        <line x1="20" y1="100" x2="580" y2="100" stroke="var(--border)" stroke-width="2"/>
+        <rect x="60" y="88" width="150" height="24" fill="var(--coral-dim)" stroke="var(--coral)" stroke-width="1.5"/>
+        <rect x="210" y="88" width="140" height="24" fill="url(#fadeGrad)" stroke="var(--coral)" stroke-width="1" stroke-opacity="0.4"/>
+        <text x="230" y="70" fill="var(--coral)" font-size="12" text-anchor="middle">freno in rilascio progressivo</text>
+        <line x1="280" y1="72" x2="280" y2="130" stroke="var(--text2)" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"/>
+        <text x="280" y="145" fill="var(--text2)" font-size="11" text-anchor="middle">inizio piega</text>
+        <circle cx="350" cy="100" r="6" fill="var(--amber)"/>
+        <text x="420" y="70" fill="var(--amber)" font-size="12" text-anchor="middle">Corda — freno rilasciato del tutto qui</text>
+      </svg>
+      <div class="diagram-caption">Il freno resta in mano fino a dentro la curva, rilasciato in modo progressivo fino al punto di corda.</div>
+    </div>
+
     <h3>Attività / esercizio — In pista</h3>
     <p>Trattandosi di una tecnica racing, la pista è il luogo più sicuro dove provarla. Prendi una curva che ti piace, possibilmente una dx e una sx, e prova a ritardare ogni volta un po' di più il momento in cui prendi in mano il freno:</p>
     <ul>
@@ -449,6 +510,54 @@
 
     <h3>Come riconoscerlo mentre guidi</h3>
     <p>Se dopo la corda ti accorgi di dover correggere la traiettoria per non uscire largo (obbligandoti a cucirti all'interno), è quasi sempre segno di early apex: hai raggiunto la corda troppo presto rispetto alla curva. Un segnale fisico: senti la necessità di "richiudere" il gas o correggere la piega proprio a metà/fine curva, quando dovresti già essere in fase di apertura.</p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowTealL2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 Z" fill="var(--teal)"/></marker>
+          <marker id="arrowCoralL2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 Z" fill="var(--coral)"/></marker>
+        </defs>
+        <text x="200" y="20" fill="var(--text)" font-size="13" font-weight="600" text-anchor="middle">CURVA A SINISTRA</text>
+        <path d="M540,410 L540,230 C540,110 460,30 340,30 L60,30" fill="none" stroke="var(--border)" stroke-width="2"/>
+        <path d="M420,410 L420,230 C420,186 384,150 340,150 L60,150" fill="none" stroke="var(--border)" stroke-width="2"/>
+        <text x="100" y="45" fill="var(--text3)" font-size="10" text-anchor="middle">esterno</text>
+        <text x="120" y="142" fill="var(--text3)" font-size="10" text-anchor="middle">interno / corda</text>
+        <text x="480" y="425" fill="var(--text3)" font-size="10" text-anchor="middle">↑ senso di marcia</text>
+        <path d="M480,405 C425,180 415,60 80,45" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-dasharray="7,5" marker-end="url(#arrowCoralL2)"/>
+        <circle cx="409.2" cy="180.6" r="5" fill="var(--coral)"/>
+        <text x="470" y="180" fill="var(--coral)" font-size="12" text-anchor="middle">apex anticipato</text>
+        <text x="200" y="60" fill="var(--coral)" font-size="12" text-anchor="middle">correzione brusca, esce largo</text>
+        <path d="M465,405 C460,130 400,120 80,95" fill="none" stroke="var(--teal)" stroke-width="2.5" marker-end="url(#arrowTealL2)"/>
+        <circle cx="382.1" cy="150.5" r="5" fill="var(--teal)"/>
+        <text x="350" y="195" fill="var(--teal)" font-size="12" text-anchor="middle">apex corretto</text>
+        <text x="140" y="110" fill="var(--teal)" font-size="12" text-anchor="middle">uscita fluida</text>
+      </svg>
+      <div class="diagram-caption">Curva a sinistra: l'apex anticipato (rosso) tocca la corda presto e deve correggere bruscamente uscendo largo. L'apex corretto (verde) tocca più tardi e mantiene una curvatura fluida fino all'uscita, restando sempre dentro i margini della strada.</div>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowTealR2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 Z" fill="var(--teal)"/></marker>
+          <marker id="arrowCoralR2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L8,4 L0,8 Z" fill="var(--coral)"/></marker>
+        </defs>
+        <text x="480" y="20" fill="var(--text)" font-size="13" font-weight="600" text-anchor="middle">CURVA A DESTRA</text>
+        <path d="M140,410 L140,230 C140,110 220,30 340,30 L620,30" fill="none" stroke="var(--border)" stroke-width="2"/>
+        <path d="M260,410 L260,230 C260,186 296,150 340,150 L620,150" fill="none" stroke="var(--border)" stroke-width="2"/>
+        <text x="580" y="45" fill="var(--text3)" font-size="10" text-anchor="middle">esterno</text>
+        <text x="560" y="142" fill="var(--text3)" font-size="10" text-anchor="middle">interno / corda</text>
+        <text x="215" y="425" fill="var(--text3)" font-size="10" text-anchor="middle">↑ senso di marcia</text>
+        <path d="M200,405 C255,180 265,60 600,45" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-dasharray="7,5" marker-end="url(#arrowCoralR2)"/>
+        <circle cx="270.8" cy="180.6" r="5" fill="var(--coral)"/>
+        <text x="210" y="180" fill="var(--coral)" font-size="12" text-anchor="middle">apex anticipato</text>
+        <text x="480" y="60" fill="var(--coral)" font-size="12" text-anchor="middle">correzione brusca, esce largo</text>
+        <path d="M215,405 C220,130 280,120 600,95" fill="none" stroke="var(--teal)" stroke-width="2.5" marker-end="url(#arrowTealR2)"/>
+        <circle cx="297.9" cy="150.5" r="5" fill="var(--teal)"/>
+        <text x="330" y="195" fill="var(--teal)" font-size="12" text-anchor="middle">apex corretto</text>
+        <text x="540" y="110" fill="var(--teal)" font-size="12" text-anchor="middle">uscita fluida</text>
+      </svg>
+      <div class="diagram-caption">Curva a destra: stessa logica, speculare. Questo è il lato su cui, per la tappa 5, conviene lavorare di più.</div>
+    </div>
 
     <h3>Attività / esercizio</h3>
     <p><strong>Su strada:</strong> su curve ampie e con buona visibilità, che conosci molto bene, esagera leggermente nel ritardare il punto in cui "punti" verso l'interno — è più facile correggere un apex troppo tardivo (sicuro) che uno troppo anticipato (rischioso, ti porta verso l'esterno in uscita, magari in controsenso).</p>
@@ -486,6 +595,21 @@
     <h3>Come riconoscerlo mentre guidi</h3>
     <p>Se senti che la moto "scende" in piega gradualmente, con un input che sembra progressivo ma poco definito, e se hai la sensazione di dover "accompagnare" la moto più che comandarla, il controsterzo è probabilmente diluito. Un segnale utile: la moto ti porta da sola troppo verso il centro curva o tende a chiudere eccessivamente. Esempio: il tornante che fa sì che si abbatta la moto da quasi ferma in corda/centro.</p>
 
+    <div class="diagram-box">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="150" y="25" fill="var(--text2)" font-size="12" text-anchor="middle">Controsterzo diluito</text>
+        <path d="M40,170 C90,170 110,150 130,130 C160,95 200,60 260,50" fill="none" stroke="var(--amber)" stroke-width="2.5"/>
+        <text x="150" y="188" fill="var(--amber)" font-size="11" text-anchor="middle">input graduale, la moto "scende" lenta</text>
+        <text x="450" y="25" fill="var(--text2)" font-size="12" text-anchor="middle">Controsterzo deciso</text>
+        <path d="M340,170 C360,170 370,168 375,160" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
+        <path d="M375,160 C400,110 430,65 480,50" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
+        <circle cx="375" cy="160" r="5" fill="var(--teal)"/>
+        <text x="375" y="142" fill="var(--teal)" font-size="10" text-anchor="middle">impulso netto</text>
+        <text x="450" y="188" fill="var(--teal)" font-size="11" text-anchor="middle">input breve e deciso, risposta immediata</text>
+      </svg>
+      <div class="diagram-caption">Lo stesso angolo di piega raggiunto con un input diluito (sinistra) o con un impulso deciso in un punto preciso (destra).</div>
+    </div>
+
     <h3>Attività / esercizio</h3>
     <p><strong>Su strada:</strong> su una serie di curve semplici e a bassa/media velocità (attenzione: non forzare su strada aperta al traffico!), lavora sulla decisione dell'input di controsterzo separatamente dalla velocità — l'obiettivo non è piegare di più, è piegare più deciso. Più la curva è stretta, più necessita di controsterzo deciso e azione sulla gamba esterna, es. tornante di montagna.</p>
     <p><strong>In pista:</strong> ideale per questo lavoro. Su una curva singola, ripeti l'ingresso concentrandoti solo sulla nettezza del comando, tenendo la velocità costante tra un tentativo e l'altro, per isolare la variabile.</p>
@@ -515,6 +639,18 @@
 
     <h3>Come riconoscerlo mentre guidi</h3>
     <p>Se noti che un lato ti sembra "più naturale" dell'altro — piega più fluida, meno esitazione, meno correzioni — c'è asimmetria da lavorare. In uscita, se il tuo sguardo resta fissato sull'apex invece di spostarsi verso il punto di uscita e oltre, la gestione dello sguardo in uscita non è ancora completa.</p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="150" y="25" fill="var(--teal)" font-size="12" text-anchor="middle">Curva a sinistra — naturale</text>
+        <path d="M40,160 C90,160 120,110 180,80 C220,60 260,50 300,45" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
+        <text x="450" y="25" fill="var(--coral)" font-size="12" text-anchor="middle">Curva a destra — da lavorare</text>
+        <path d="M330,45 C370,50 410,60 450,80 C490,105 520,135 560,160" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-dasharray="6,4"/>
+        <text x="150" y="185" fill="var(--text2)" font-size="11" text-anchor="middle">fluida, sguardo esteso in uscita</text>
+        <text x="450" y="185" fill="var(--text2)" font-size="11" text-anchor="middle">più esitazione, apex anticipato</text>
+      </svg>
+      <div class="diagram-caption">L'obiettivo della tappa 5 è portare la curva a destra allo stesso livello di fluidità di quella a sinistra.</div>
+    </div>
 
     <h3>Attività / esercizio</h3>
     <p><strong>Su strada:</strong> scegli un percorso con curve alternate sx/dx in quantità simile, e presta attenzione consapevole al lato che ti risulta meno naturale, applicando gli stessi principi già consolidati nelle tappe precedenti.</p>
